@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ivory Nest - Premium Home Decor</title>
+  <style>
+    /* Global Styles */
+    :root {
+      --primary-color: #232323;
+      --secondary-color: #f8f5f2;
+      --accent-color: #c8b49d;
+      --text-color: #232323;
+      --light-text: #6b6b6b;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1.5rem;
+      --spacing-lg: 3rem;
+      --font-primary: 'Helvetica Neue', sans-serif;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: var(--font-primary);
+      color: var(--text-color);
+      background-color: #fff;
+      line-height: 1.6;
+    }
+    
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 1000;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+      text-decoration: none;
+      color: var(--primary-color);
+    }
+    
+    .nav-list {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+    
+    .nav-list li {
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .nav-list li:after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--primary-color);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-list li:hover:after {
+      width: 100%;
+    }
+    
+    .usermenu {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    
+    .usermenu i {
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    
+    /* Main Content */
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: var(--spacing-lg) var(--spacing-md);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
+    }
+    
+    /* Product Layout */
+    .product-container {
+      display: grid;
+      grid-template-columns: 6fr 4fr;
+      gap: var(--spacing-lg);
+    }
+    
+    /* Product Images */
+    .product-image {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    
+    .product-image img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+    
+    /* Product Details */
+    .product-info-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+    }
+    
+    .product-details {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+    
+    .product-details h1 {
+      font-size: 1.8rem;
+      font-weight: 400;
+      letter-spacing: 1px;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .price-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .price {
+      font-size: 1.2rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+    
+    .price .amount {
+      font-size: 1.5rem;
+      font-weight: 400;
+    }
+    
+    .product-specs {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .product-specs p {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.5rem;
+    }
+    
+    .spec-label {
+      color: var(--light-text);
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+    
+    .spec-value {
+      font-weight: 400;
+    }
+    
+    /* Quantity Control */
+    .quantity-section {
+      margin: var(--spacing-md) 0;
+    }
+    
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      margin: var(--spacing-sm) 0;
+      border: 1px solid #ddd;
+      width: fit-content;
+    }
+    
+    .quantity-control button {
+      background: none;
+      border: none;
+      width: 40px;
+      height: 40px;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    
+    .quantity-control p {
+      width: 40px;
+      text-align: center;
+      font-size: 1rem;
+    }
+    
+    .add-to-cart {
+      margin-top: var(--spacing-md);
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    
+    .add-to-cart:hover {
+      background-color: #000;
+    }
+    
+    /* Policies */
+    .policies {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-lg);
+      border-top: 1px solid #eee;
+      padding-top: var(--spacing-md);
+    }
+    
+    .policy {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    
+    .policy img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+    
+    .policy h3 {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin: 0.5rem 0 0.2rem;
+    }
+    
+    .policy p {
+      font-size: 0.8rem;
+      color: var(--light-text);
+    }
+    
+    /* Product Description */
+    .product-description {
+      margin-top: var(--spacing-lg);
+      border-top: 1px solid #eee;
+      padding-top: var(--spacing-md);
+    }
+    
+    .product-description h2 {
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-bottom: var(--spacing-md);
+      letter-spacing: 1px;
+    }
+    
+    .product-description p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--light-text);
+    }
+    
+    /* Footer */
+    footer {
+      background-color: var(--secondary-color);
+      padding: var(--spacing-lg) var(--spacing-md);
+      margin-top: var(--spacing-lg);
+    }
+    
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-lg);
+    }
+    
+    .footer-column h3 {
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: var(--spacing-md);
+      letter-spacing: 1px;
+    }
+    
+    .footer-column ul {
+      list-style: none;
+    }
+    
+    .footer-column ul li {
+      margin-bottom: var(--spacing-sm);
+      font-size: 0.9rem;
+      color: var(--light-text);
+      cursor: pointer;
+    }
+    
+    .footer-column ul li:hover {
+      color: var(--primary-color);
+    }
+    
+    .newsletter p {
+      margin-bottom: var(--spacing-md);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--light-text);
+    }
+    
+    .newsletter-form {
+      display: flex;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .newsletter-form input {
+      flex-grow: 1;
+      padding: 0.8rem;
+      border: none;
+      background: white;
+    }
+    
+    .newsletter-form button {
+      padding: 0.8rem 1.5rem;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+    }
+    
+    .social-icons {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: var(--spacing-md);
+    }
+    
+    .social-icons i {
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    
+    .copyright {
+      text-align: center;
+      padding: var(--spacing-md) 0;
+      font-size: 0.8rem;
+      color: var(--light-text);
+      max-width: 1400px;
+      margin: 0 auto;
+      border-top: 1px solid #ddd;
+      margin-top: var(--spacing-lg);
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+      .product-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .nav-list {
+        display: none;
+      }
+      
+      .policies {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <ul class="nav-list">
+        <li>SHOP</li>
+        <li>INSPIRATION</li>
+        <li>COLLECTION</li>
+        <li>ABOUT</li>
+      </ul>
+    </nav>
+    
+    <h1><a href="index.html" class="logo">IVORY NEST</a></h1>
+    
+    <ul class="usermenu">
+      <li><i class="fa-solid fa-magnifying-glass"></i></li>
+      <li><i class="fa-solid fa-cart-shopping"></i></li>
+      <li><i class="fa-solid fa-user"></i></li>
+    </ul>
+  </header>
+
+  <main>
+    <div class="product-container">
+      <div class="product-image">
+        <img src="https://thedecorkart.com/cdn/shop/files/009A8485_38a63048-4f11-412d-8185-95dafd7bae11_500x.jpg?v=1746278214" alt="Glass Storage Jar with Wooden Lid and Spoon" />
+      </div>
+      
+      <div class="product-info-container">
+        <div class="product-details">
+          <h1>Glass Storage Jar with Wooden Lid and Spoon</h1>
+          
+          <div class="price-info">
+            <p class="price">
+              <span class="label">Price</span>
+              <span class="amount">Rs. 860</span>
+              <span class="tax-note">inclusive of all taxes</span>
+            </p>
+            <p>Free Shipping on Prepaid orders & Orders above Rs. 5000</p>
+            <p>SKU: OMRA-28-8</p>
+          </div>
+          
+          <div class="product-specs">
+            <p>
+              <span class="spec-label">MATERIAL</span>
+              <span class="spec-value">Glass</span>
+            </p>
+            <p>
+              <span class="spec-label">PACK CONTENT</span>
+              <span class="spec-value">1 Unit</span>
+            </p>
+            <p>
+              <span class="spec-label">DIMENSIONS</span>
+              <span class="spec-value">11 cm × 9 cm × 15 cm (L×W×H)</span>
+            </p>
+          </div>
+          
+          <div class="quantity-section">
+            <p>Quantity</p>
+            <div class="quantity-control">
+              <button>−</button>
+              <p>1</p>
+              <button>+</button>
+            </div>
+            <button class="add-to-cart">ADD TO CART</button>
+          </div>
+        </div>
+        
+        <div class="product-description">
+          <h2>PRODUCT DETAILS</h2>
+          <p>Keep your kitchen essentials fresh and organized with this elegant glass storage jar. Featuring a natural wooden lid with a secure seal and a matching wooden spoon that rests conveniently on the side, this jar is both practical and stylish. Its transparent glass body allows easy viewing of contents, making it ideal for storing sugar, salt, spices, or tea. Perfect for modern, rustic, or minimalist kitchen decor.</p>
+        </div>
+        
+        <div class="policies">
+          <div class="policy">
+            <img src="https://thedecorkart.com/cdn/shop/t/301/assets/order.png?v=167654436576522912461746531441" alt="">
+            <h3>Free Delivery</h3>
+            <p>Free Shipping On Orders above Rs. 5000</p>
+          </div>
+          <div class="policy">
+            <img src="https://thedecorkart.com/cdn/shop/t/301/assets/return.png?v=136021855291253627201746531441" alt="">
+            <h3>Easy Returns</h3>
+            <p>Return within 30 days of Order Delivery</p>
+          </div>
+          <div class="policy">
+            <img src="https://thedecorkart.com/cdn/shop/t/301/assets/secure.png?v=175744316472617686811746531441" alt="">
+            <h3>Secure Payments</h3>
+            <p>Safer, Faster and more Secure Online Payment</p>
+          </div>
+          <div class="policy">
+            <img src="https://thedecorkart.com/cdn/shop/t/301/assets/cash.png?v=65799466309934174931746531441" alt="">
+            <h3>Cash On Delivery</h3>
+            <p>COD Available</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-column">
+        <h3>COMPANY</h3>
+        <ul>
+          <li>About Ivory Nest</li>
+          <li>Careers</li>
+          <li>Contact</li>
+          <li>Our Responsibility</li>
+          <li>Privacy Policy</li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3>CUSTOMER SERVICE</h3>
+        <ul>
+          <li>Store Locator</li>
+          <li>Visit us</li>
+          <li>Shipping Policy</li>
+          <li>Return Policy</li>
+          <li>Terms and Conditions</li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3>PROFESSIONALS</h3>
+        <ul>
+          <li>B2B Portal</li>
+          <li>Image Bank</li>
+          <li>Press Kit</li>
+          <li>2D, 3D & Revit Files</li>
+        </ul>
+      </div>
+      
+      <div class="footer-column newsletter">
+        <h3>NEWSLETTER</h3>
+        <p>Stay connected to receive updates, learn about special events & new product launches from Ivory Nest</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your email">
+          <button>SUBSCRIBE</button>
+        </div>
+        <div class="social-icons">
+          <i class="fab fa-facebook-f"></i>
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-pinterest-p"></i>
+        </div>
+      </div>
+    </div>
+    
+    <div class="copyright">
+      <p>© 2025 Ivory Nest | All Rights Reserved | Ivory A/S, Aarhusgade, Floor 2, Denmark</p>
+    </div>
+  </footer>
+  <script>
+    // Product Overview Fetch Script
+document.addEventListener('DOMContentLoaded', function() {
+  // Get product ID from URL or use default
+  const urlParams = new URLSearchParams(window.location.search);
+  const productId = urlParams.get('id') || '1'; // Default to product ID 1 if not specified
+  
+  // Elements to update
+  const productImage = document.querySelector('.product-image img');
+  const productTitle = document.querySelector('.product-details h1');
+  const productPrice = document.querySelector('.price .amount');
+  const productSKU = document.querySelector('.price-info p:last-child');
+  const productMaterial = document.querySelector('.product-specs p:nth-child(1) .spec-value');
+  const productPackContent = document.querySelector('.product-specs p:nth-child(2) .spec-value');
+  const productDimensions = document.querySelector('.product-specs p:nth-child(3) .spec-value');
+  const productDescription = document.querySelector('.product-description p');
+  const addToCartButton = document.querySelector('.add-to-cart');
+  
+  // Loading state
+  function setLoadingState() {
+    productTitle.textContent = 'Loading product...';
+    productPrice.textContent = '...';
+    productImage.src = '/api/placeholder/500/500';
+    productImage.alt = 'Loading product...';
+  }
+  
+  // Error state
+  function setErrorState(message) {
+    productTitle.textContent = message || 'Error loading product';
+    productPrice.textContent = '--';
+    productImage.src = '/api/placeholder/500/500';
+    productImage.alt = 'Product not found';
+    addToCartButton.disabled = true;
+  }
+  
+  // Fetch product data
+  async function fetchProductData(id) {
+    setLoadingState();
+    
+    try {
+      const response = await fetch(`https://home-decor-tqze.onrender.com/products/${id}`);
+      
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+      
+      const product = await response.json();
+      updateProductUI(product);
+      return product;
+    } catch (error) {
+      console.error('Error fetching product data:', error);
+      setErrorState('Failed to load product. Please try again later.');
+      return null;
+    }
+  }
+  
+  // Update UI with product data
+  function updateProductUI(product) {
+    if (!product || !product.name) {
+      setErrorState('Product not found');
+      return;
+    }
+    
+    // Update basic product info
+    document.title = `${product.name} | Ivory Nest`;
+    productTitle.textContent = product.name;
+    productPrice.textContent = `Rs. ${product.price}`;
+    productImage.src = product.image;
+    productImage.alt = product.name;
+    
+    // Update product details
+    productSKU.textContent = `SKU: ${product.id || 'N/A'}`;
+    
+    // Update specs if available in API response, otherwise keep defaults
+    if (product.material) {
+      productMaterial.textContent = product.material;
+    }
+    
+    if (product.packContent) {
+      productPackContent.textContent = product.packContent;
+    }
+    
+    if (product.dimensions) {
+      productDimensions.textContent = product.dimensions;
+    }
+    
+    // Update description
+    if (product.description) {
+      productDescription.textContent = product.description;
+    }
+    
+    // Enable add to cart button
+    addToCartButton.disabled = false;
+    
+    // Add event listeners for quantity controls
+    const quantityText = document.querySelector('.quantity-control p');
+    const decreaseBtn = document.querySelector('.quantity-control button:first-child');
+    const increaseBtn = document.querySelector('.quantity-control button:last-child');
+    
+    let quantity = 1;
+    
+    decreaseBtn.addEventListener('click', function() {
+      if (quantity > 1) {
+        quantity--;
+        quantityText.textContent = quantity;
+      }
+    });
+    
+    increaseBtn.addEventListener('click', function() {
+      quantity++;
+      quantityText.textContent = quantity;
+    });
+    
+    // Add to cart functionality
+    addToCartButton.addEventListener('click', function() {
+      // Here you would typically add the product to cart
+      // For demonstration, we'll show an alert
+      alert(`Added ${quantity} ${product.name} to cart!`);
+      
+      // In a real implementation, you might do something like:
+      // addToCart(product.id, quantity);
+    });
+  }
+  
+  // Initialize
+  fetchProductData(productId);
+});
+  </script>
+  <script src="cart-integration.js"></script>
+</body>
+
+</html>
+

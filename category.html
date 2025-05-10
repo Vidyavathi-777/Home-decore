@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ivory Nest | Category</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .category {
+            min-height: calc(100vh - 200px);
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        #category-title {
+            padding-top: 8rem;
+            text-align: center;
+            font-size: 2rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+        
+        #category-description {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            font-weight: 300;
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 40px;
+            padding: 20px 0;
+        }
+        
+        .product-card {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #fafafa;
+            border: none;
+            padding: 0;
+            border-radius: 0;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image-container {
+            overflow: hidden;
+            position: relative;
+            height: 320px;
+        }
+        
+        .product-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+        
+        .product-info {
+            padding: 15px 10px;
+            text-align: center;
+        }
+        
+        .product-info h3 {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        
+        .product-info p {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 40px;
+            color: #996;
+            background-color: #fff9f9;
+            border-radius: 4px;
+        }
+        
+        .cart-btn {
+            background-color: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            width: 100%;
+            margin-top: 5px;
+        }
+        
+        .cart-btn:hover {
+            background-color: #333;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #c4634d;
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .cart-icon-wrapper {
+            position: relative;
+        }
+        
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            display: none;
+            z-index: 1000;
+            animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+        }
+        
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        
+        @keyframes fadeOut {
+            from {opacity: 1;}
+            to {opacity: 0;}
+        }
+        
+        /* Responsive Styles */
+        @media screen and (max-width: 1024px) {
+            .nav-list {
+                gap: 20px;
+            }
+            
+            .product-list {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+        
+        @media screen and (max-width: 768px) {
+            .header-section {
+                padding: 0 20px;
+            }
+            
+            .navbar {
+                display: none;
+            }
+            
+            .product-list {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 20px;
+            }
+            
+            .product-image-container {
+                height: 220px;
+            }
+            
+            .details {
+                flex-direction: column;
+            }
+            
+            .details > div {
+                width: 100%;
+            }
+            
+            .cart-btn {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-section">
+        <nav class="navbar">
+            <ul class="nav-list">
+                <li><a href="#shop-by-category">CATEGORY</a></li>
+                <li>INSPIRATION</li>
+                <li>IVORY HOUSE</li>
+                <li>SAMPLES</li>
+                <li>PROFESSIONALS</li>
+            </ul>
+        </nav>
+        <h1><a href="index.html" class="logo">Ivory Nest</a></h1>
+        <ul class="usermenu">
+            <li><i class="fa-solid fa-magnifying-glass"></i></li>
+            <li class="cart-icon-wrapper">
+                <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+                <span class="cart-count" id="cart-count">0</span>
+            </li>
+            <li class="user-dropdown-wrapper">
+                <i class="fa-solid fa-user" id="user-icon"></i>
+                <div class="user-dropdown hidden" id="user-dropdown">
+                    <a href="/login.html">Login</a>
+                    <a href="">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </header>
+
+    <main class="category">
+        <h2 id="category-title">Category</h2>
+        <p id="category-description"></p>
+        <div id="product-list" class="product-list">
+            <p class="loading">Loading Products...</p>
+        </div>
+    </main>
+
+    <footer id="footer">
+        <section class="details">
+            <div class="company">
+                <ul>
+                    <li>About Ivory Nest</li>
+                    <li>Careers</li>
+                    <li>Contact</li>
+                    <li>Cookie Policy</li>
+                    <li>Food Administration Report</li>
+                    <li>Declaration</li>
+                    <li>Our Responsibility</li>
+                    <li>Whistleblower Platform</li>
+                </ul>
+            </div>
+            <div class="customer-service">
+                <ul>
+                    <li>Store Locator</li>
+                    <li>Visit us</li>
+                    <li>Shipping Policy</li>
+                    <li>Return Policy</li>
+                    <li>Terms and Conditions</li>
+                    <li>Privacy Policy</li>
+                </ul>
+            </div>
+            <div class="professionals">
+                <ul>
+                    <li>B2B Online Portal</li>
+                    <li>Image Bank</li>
+                    <li>Upholstery Program</li>
+                    <li>Press Kit</li>
+                    <li>Revit & pCon Planner</li>
+                    <li>2D, 3D & Revit Files</li>
+                </ul>
+            </div>
+            <div class="newsleter">
+                <p>
+                    Stay connected to receive updates, learn about special events & new
+                    product launches from Ivory Nest.
+                </p>
+                <button>SUBSCRIBE</button>
+                <ul>
+                    <li><i class="fab fa-facebook-f"></i></li>
+                    <li><i class="fab fa-instagram"></i></li>
+                    <li><i class="fab fa-pinterest-p"></i></li>
+                </ul>
+            </div>
+        </section>
+        <section class="copyrights">
+            <h1>Ivory Nest</h1>
+            <p>Ivory A/S, Aarhusgade, Floor 2, Denmark</p>
+            <p>CVR: 12236483479, info@ivorynest.com</p>
+        </section>
+    </footer>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast">Item added to cart!</div>
+
+    <script>
+        // User dropdown functionality
+        const userIcon = document.getElementById("user-icon");
+        const userDropdown = document.getElementById("user-dropdown");
+        
+        userIcon.addEventListener("click", (e) => {
+            e.stopPropagation();
+            userDropdown.classList.toggle("hidden");
+        });
+        
+        document.addEventListener("click", () => {
+            userDropdown.classList.add("hidden");
+        });
+
+        // Cart management
+        function getCart() {
+            const cart = localStorage.getItem('ivorynest-cart');
+            return cart ? JSON.parse(cart) : [];
+        }
+        
+        function saveCart(cart) {
+            localStorage.setItem('ivorynest-cart', JSON.stringify(cart));
+            updateCartCount();
+        }
+        
+        function addToCart(product) {
+            const cart = getCart();
+            
+            // Check if product already exists in cart
+            const existingProductIndex = cart.findIndex(item => item.id === product.id);
+            
+            if (existingProductIndex !== -1) {
+                // Increment quantity if product already in cart
+                cart[existingProductIndex].quantity += 1;
+            } else {
+                // Add new product with quantity 1
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1
+                });
+            }
+            
+            saveCart(cart);
+            showToast('Item added to cart!');
+        }
+        
+        function updateCartCount() {
+            const cart = getCart();
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            
+            const cartCountElement = document.getElementById('cart-count');
+            cartCountElement.textContent = totalItems;
+            
+            // Hide the count if zero
+            if (totalItems === 0) {
+                cartCountElement.style.display = 'none';
+            } else {
+                cartCountElement.style.display = 'flex';
+            }
+        }
+        
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            
+            // Hide toast after 3 seconds
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        const placeholderImages = [
+            "https://audocph.com/cdn/shop/files/Audo_Tearoom_Club_Chair_Swivel_Androgyne_Side_Table_Reverse_Table_Lamp_Portable_1_cefb4595-c921-4dad-a474-09b09553e71e.jpg?v=1740735488&width=500",
+            "https://audocph.com/cdn/shop/files/Audo_Androgyne_Dining_Table_Grey_Galaxy_TR_Bulb_Pendant_Tearoom_Club_Chair_Swivel_Loose_Cover_1_695d1d29-240a-44d1-92b7-f39010f9c5e5.jpg?v=1741165858&width=500",
+            "https://audocph.com/cdn/shop/files/Audo_TR_Bulb_Suspended_Wall_Lamp_23_46f8404e-fd03-483c-979d-d03e4a7205a4.jpg?v=1740736694&width=500",
+            "https://audocph.com/cdn/shop/files/Audo_Pavot_Bowl_32.jpg?v=1742992599&width=500"
+        ];
+        
+        const categoryDescriptions = {
+            1: "Explore our collection of modern, elegant seating solutions that combine comfort with sophisticated Scandinavian design. From our iconic Tearoom Club Chair to our modular sofa systems.",
+            2: "Discover dining and side tables that balance form and function with exceptional craftsmanship. Our tables feature premium materials including marble, oak, and brass.",
+            3: "Illuminate your space with our collection of designer lighting that creates ambiance while serving as sculptural pieces. From pendants to table lamps, each piece is a statement.",
+            4: "Elevate your home with our thoughtfully curated selection of decorative objects, vases, and functional accessories that add the perfect finishing touch to any space."
+        };
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoryId = urlParams.get("id");
+        const productList = document.getElementById("product-list");
+        const categoryTitle = document.getElementById("category-title");
+        const categoryDescription = document.getElementById("category-description");
+        
+        if (categoryId && categoryDescriptions[categoryId]) {
+            categoryDescription.textContent = categoryDescriptions[categoryId];
+        }
+        
+        async function fetchProductsByCategory(id) {
+            if (!id) {
+                productList.innerHTML = "<p class='error-message'>Category not found. Please return to the homepage.</p>";
+                return;
+            }
+            
+            try {
+                productList.innerHTML = "<p class='loading'>Loading products...</p>";
+                const response = await fetch(`https://home-decor-tqze.onrender.com/products/categories/${id}`);
+                const data = await response.json();
+                console.log(data);
+                
+                categoryTitle.textContent = data.category_name || "Category";
+                
+                if (data.category_description) {
+                    categoryDescription.textContent = data.category_description;
+                }
+                
+                if (!data || !data.product || data.product.length === 0) {
+                    productList.innerHTML = "<p class='error-message'>No products found in this category</p>";
+                    return;
+                }
+                
+                productList.innerHTML = data.product.map((product, index) => {
+                    const imageUrl = product.image || placeholderImages[index % placeholderImages.length];
+                    
+                    return `
+                        <div class="product-card" data-id="${product.id}">
+                            <div class="product-image-container">
+                                <img src="${imageUrl}" alt="${product.name}" loading="lazy" />
+                            </div>
+                            <div class="product-info">
+                                <h3>${product.name}</h3>
+                                <p>${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(product.price)}</p>
+                                <button class="cart-btn" data-id="${product.id}">Add to Cart</button>
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+                
+                // Product card click event - navigate to product detail page
+                document.querySelectorAll(".product-card").forEach(card => {
+                    const productImage = card.querySelector(".product-image-container");
+                    const productInfo = card.querySelector(".product-info h3, .product-info p");
+                    
+                    // Only navigate when clicking on image or text, not the button
+                    productImage.addEventListener("click", () => {
+                        const productId = card.getAttribute("data-id");
+                        window.location.href = `/singleProduct.html?id=${productId}`;
+                    });
+                    
+                    if (productInfo) {
+                        productInfo.addEventListener("click", () => {
+                            const productId = card.getAttribute("data-id");
+                            window.location.href = `/singleProduct.html?id=${productId}`;
+                        });
+                    }
+                });
+                
+                // Add to cart button click events
+                document.querySelectorAll(".cart-btn").forEach(button => {
+                    button.addEventListener("click", (e) => {
+                        e.stopPropagation(); // Prevent navigation to product page
+                        
+                        const productId = button.getAttribute("data-id");
+                        const product = data.product.find(p => p.id.toString() === productId);
+                        
+                        if (product) {
+                            addToCart({
+                                id: product.id,
+                                name: product.name,
+                                price: product.price,
+                                image: product.image || placeholderImages[data.product.indexOf(product) % placeholderImages.length]
+                            });
+                        }
+                    });
+                });
+                
+            } catch (error) {
+                console.error("Error fetching products:", error);
+                productList.innerHTML = "<p class='error-message'>Failed to load products. Please try again later.</p>";
+            }
+        }
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchProductsByCategory(categoryId);
+            updateCartCount(); // Initialize cart count on page load
+        });
+    </script>
+</body>
+</html>

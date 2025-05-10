@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vimeo Adaptive Streaming</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.12/hls.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #1ab7ea; /* Vimeo blue */
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            margin: 20px 0;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            max-height: 450px;
+            background-color: #000;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        .status.error {
+            background-color: #ffebee;
+            color: #c62828;
+            display: block;
+        }
+        .status.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vimeo Adaptive Streaming Player</h1>
+    <div class="video-container">
+        <video id="video" controls></video>
+        <div id="status" class="status"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('video');
+            const statusElement = document.getElementById('status');
+            const videoUrl = 'https://vod-adaptive-ak.vimeocdn.com/exp=1746821495~acl=%2F9aa44e75-642c-49c8-ab1c-c9fca11e9f4b%2F%2A~hmac=d4b206a8e836d3a20832bc52bbf565514f6ec08ccd0e8da53570a7ec5e596d82/9aa44e75-642c-49c8-ab1c-c9fca11e9f4b/v2/playlist/av/primary/prot/cXNyPTE/playlist.json?omit=av1-hevc&pathsig=8c953e4f~dutCyQyrzO44QbBQsVQCPyT0wTtlSN8gBPKB31O8RAA&qsr=1&r=dXM%3D&rh=4pDgh7';
+
+            function showStatus(message, isError = false) {
+                statusElement.textContent = message;
+                statusElement.className = 'status ' + (isError ? 'error' : 'success');
+            }
+
+            // Check if HLS.js is supported
+            if (Hls.isSupported()) {
+                const hls = new Hls({
+                    debug: false,
+                    enableWorker: true,
+                    lowLatencyMode: true,
+                    backBufferLength: 90
+                });
+                
+                // Handle HLS events
+                hls.on(Hls.Events.MEDIA_ATTACHED, function() {
+                    console.log('HLS.js attached to video element');
+                });
+                
+                hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
+                    console.log('Manifest loaded, found ' + data.levels.length + ' quality levels');
+                    showStatus('Video loaded successfully. Playing at adaptive quality.');
+                    video.play().catch(e => {
+                        console.warn('Autoplay prevented:', e);
+                    });
+                });
+                
+                hls.on(Hls.Events.ERROR, function(event, data) {
+                    if (data.fatal) {
+                        switch(data.type) {
+                            case Hls.ErrorTypes.NETWORK_ERROR:
+                                showStatus('Network error. Trying to recover...', true);
+                                hls.startLoad();
+                                break;
+                            case Hls.ErrorTypes.MEDIA_ERROR:
+                                showStatus('Media error. Trying to recover...', true);
+                                hls.recoverMediaError();
+                                break;
+                            default:
+                                showStatus('Fatal error: ' + data.details, true);
+                                console.error('Fatal error:', data);
+                                break;
+                        }
+                    }
+                });
+                
+                // Load the source
+                hls.loadSource(videoUrl);
+                hls.attachMedia(video);
+                
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                // For Safari and iOS devices that support native HLS
+                video.src = videoUrl;
+                video.addEventListener('loadedmetadata', function() {
+                    showStatus('Video loaded successfully (native HLS).');
+                    video.play().catch(e => {
+                        console.warn('Autoplay prevented:', e);
+                    });
+                });
+                video.addEventListener('error', function() {
+                    showStatus('Error loading video with native HLS support.', true);
+                });
+            } else {
+                showStatus('Your browser does not support HLS playback.', true);
+            }
+            
+            // Verify Vimeo URL validity
+            // Note: Vimeo tokens are typically time-limited
+            fetch(videoUrl, { method: 'HEAD' })
+                .then(response => {
+                    if (!response.ok) {
+                        showStatus('The Vimeo stream URL appears to be invalid or expired. Status: ' + response.status, true);
+                    }
+                })
+                .catch(error => {
+                    showStatus('Could not validate the Vimeo URL: ' + error.message, true);
+                });
+        });
+    </script>
+</body>
+</html>

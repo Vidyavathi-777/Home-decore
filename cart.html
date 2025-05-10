@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ivory Nest - Shopping Cart</title>
+    <style>
+      /* Global Styles */
+      :root {
+        --primary-color: #333333;
+        --accent-color: #e8d5c4;
+        --danger-color: #f44336;
+        --success-color: #4caf50;
+        --light-bg: #f9f7f5;
+        --text-color: #333333;
+        --text-light: #666666;
+        --border-color: #e5e2df;
+        --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        --transition: all 0.3s ease;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #fff;
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      button {
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      /* Header Styles */
+      .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        border-bottom: 1px solid var(--border-color);
+        background-color: #fff;
+      }
+
+      .navbar .nav-list {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+      }
+
+      .nav-list li {
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        letter-spacing: 0.5px;
+      }
+
+      .logo {
+        font-size: 22px;
+        font-weight: 500;
+        text-decoration: none;
+        color: var(--text-color);
+        letter-spacing: 1px;
+      }
+
+      .usermenu {
+        display: flex;
+        list-style: none;
+        gap: 20px;
+      }
+
+      .usermenu li {
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .user-dropdown-wrapper {
+        position: relative;
+      }
+
+      .user-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        box-shadow: var(--shadow);
+        padding: 10px 15px;
+        border-radius: 4px;
+        min-width: 120px;
+        z-index: 100;
+      }
+
+      .user-dropdown a {
+        display: block;
+        padding: 5px 0;
+        text-decoration: none;
+        color: var(--text-color);
+        font-size: 14px;
+      }
+
+      .user-dropdown a:hover {
+        color: var(--primary-color);
+        font-weight: 500;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      /* Main Content */
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 50px 20px;
+      }
+
+      /* Page Title */
+      .page-title {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+
+      .page-title h1 {
+        font-size: 24px;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--primary-color);
+      }
+
+      /* Cart Layout */
+      .cart-layout {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 40px;
+      }
+
+      /* Cart Products */
+      .cart-products {
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .product-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .product-table th {
+        text-align: left;
+        padding: 15px 0;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-light);
+        text-transform: uppercase;
+        border-bottom: 1px solid var(--border-color);
+        letter-spacing: 0.5px;
+      }
+
+      .product-row {
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .product-row td {
+        padding: 20px 0;
+        vertical-align: middle;
+      }
+
+      .product-image {
+        width: 120px;
+        height: 120px;
+        background-color: var(--light-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .product-image img {
+        max-width: 100px;
+        max-height: 100px;
+        object-fit: contain;
+      }
+
+      .product-info {
+        padding-left: 20px;
+      }
+
+      .product-name {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 5px;
+      }
+
+      .product-details {
+        font-size: 14px;
+        color: var(--text-light);
+      }
+
+      .product-price {
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .quantity-wrapper {
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        overflow: hidden;
+        width: 100px;
+      }
+
+      .quantity-btn {
+        background: none;
+        border: none;
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-color);
+      }
+
+      .quantity-btn:hover {
+        background-color: var(--light-bg);
+      }
+
+      .quantity-display {
+        width: 40px;
+        text-align: center;
+        font-size: 14px;
+        border: none;
+        border-left: 1px solid var(--border-color);
+        border-right: 1px solid var(--border-color);
+        height: 30px;
+      }
+
+      .remove-btn {
+        background: none;
+        border: none;
+        color: var(--text-light);
+        font-size: 14px;
+      }
+
+      .remove-btn:hover {
+        color: var(--danger-color);
+      }
+
+      /* Order Summary */
+      .order-summary {
+        background-color: var(--light-bg);
+        padding: 30px;
+        height: fit-content;
+      }
+
+      .summary-title {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 20px;
+        letter-spacing: 0.5px;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        font-size: 15px;
+        color: var(--text-light);
+      }
+
+      .summary-total {
+        display: flex;
+        justify-content: space-between;
+        margin: 25px 0;
+        padding-top: 15px;
+        border-top: 1px solid var(--border-color);
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--text-color);
+      }
+
+      .checkout-btn {
+        width: 100%;
+        padding: 15px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 0;
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+      }
+
+      .checkout-btn:hover {
+        background-color: #222;
+      }
+
+      .continue-shopping {
+        display: block;
+        text-align: center;
+        color: var(--text-color);
+        font-size: 14px;
+        text-decoration: none;
+        padding: 10px 0;
+      }
+
+      .continue-shopping:hover {
+        text-decoration: underline;
+      }
+
+      .empty-cart-message {
+        text-align: center;
+        padding: 60px 20px;
+      }
+
+      .empty-cart-message i {
+        font-size: 50px;
+        color: var(--text-light);
+        margin-bottom: 20px;
+      }
+
+      .empty-cart-message h3 {
+        font-size: 22px;
+        font-weight: 400;
+        margin-bottom: 15px;
+      }
+
+      .empty-cart-message p {
+        color: var(--text-light);
+        margin-bottom: 25px;
+        max-width: 400px;
+        margin: 0 auto 25px auto;
+      }
+
+      .shop-now-btn {
+        display: inline-block;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+
+      /* Notification */
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 0;
+        color: white;
+        font-weight: 500;
+        transform: translateX(150%);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        z-index: 1000;
+        max-width: 350px;
+      }
+
+      .notification.show {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .notification.success {
+        background-color: var(--success-color);
+      }
+
+      .notification.error {
+        background-color: var(--danger-color);
+      }
+
+      /* Loading Indicator */
+      .loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top-color: var(--primary-color);
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* Footer */
+      footer {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 50px 40px 20px;
+        margin-top: 80px;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .footer-col h4 {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 20px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+
+      .footer-col ul {
+        list-style: none;
+      }
+
+      .footer-col ul li {
+        margin-bottom: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .footer-col ul li:hover {
+        opacity: 0.8;
+      }
+
+      .newsletter p {
+        margin-bottom: 15px;
+        font-size: 14px;
+      }
+
+      .subscribe-input {
+        display: flex;
+        margin-bottom: 20px;
+      }
+
+      .subscribe-input input {
+        flex-grow: 1;
+        padding: 10px;
+        border: none;
+        font-size: 14px;
+      }
+
+      .subscribe-input button {
+        background-color: white;
+        color: var(--primary-color);
+        border: none;
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 15px;
+      }
+
+      .social-icons a {
+        color: white;
+        font-size: 16px;
+      }
+
+      .copyrights {
+        text-align: center;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .copyrights h2 {
+        margin-bottom: 10px;
+        font-size: 18px;
+        font-weight: 400;
+        letter-spacing: 1px;
+      }
+
+      .copyrights p {
+        font-size: 12px;
+        opacity: 0.8;
+        margin-bottom: 5px;
+      }
+
+      /* Media Queries */
+      @media screen and (max-width: 1024px) {
+        .header-section {
+          padding: 15px 20px;
+        }
+        
+        .navbar .nav-list {
+          gap: 20px;
+        }
+        
+        .cart-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        .navbar .nav-list {
+          display: none;
+        }
+        
+        .footer-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .product-table thead {
+          display: none;
+        }
+        
+        .product-row {
+          display: flex;
+          flex-wrap: wrap;
+          position: relative;
+          padding: 20px 0;
+        }
+        
+        .product-row td {
+          padding: 5px 0;
+        }
+        
+        .product-image {
+          width: 100px;
+          height: 100px;
+        }
+        
+        .product-info {
+          width: calc(100% - 100px);
+        }
+        
+        .product-price {
+          width: 50%;
+          text-align: left;
+          padding-left: 120px;
+          margin-top: 10px;
+        }
+        
+        td.quantity-cell {
+          width: 50%;
+          margin-top: 10px;
+        }
+        
+        td.remove-cell {
+          position: absolute;
+          top: 20px;
+          right: 0;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .product-price, td.quantity-cell {
+          width: 100%;
+          padding-left: 0;
+          margin-top: 15px;
+          text-align: left;
+        }
+        
+        .product-info {
+          width: calc(100% - 100px);
+          padding-right: 30px;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header-section">
+      <nav class="navbar">
+        <ul class="nav-list">
+          <li>SHOP</li>
+          <li>INSPIRATION</li>
+          <li>IVORY HOUSE</li>
+          <li>SAMPLES</li>
+          <li>PROFESSIONALS</li>
+        </ul>
+      </nav>
+      <h1><a href="index.html" class="logo">IVORY NEST</a></h1>
+      
+      <ul class="usermenu">
+        <li><i class="fa-solid fa-magnifying-glass"></i></li>
+        <li onclick="window.location.href='cart.html'"><i class="fa-solid fa-cart-shopping"></i></li>
+        <li class="user-dropdown-wrapper">
+          <i class="fa-solid fa-user" id="user-icon"></i>
+          <div class="user-dropdown hidden" id="user-dropdown">
+            <a href="/login.html">Login</a>
+            <a href="">Logout</a>
+          </div>
+        </li>
+      </ul>
+    </header>
+
+    <main>
+      <!-- Page Title -->
+      <div class="page-title">
+        <h1>Shopping Cart</h1>
+      </div>
+      
+      <!-- Empty Cart Message (shown when cart is empty) -->
+      <div id="empty-cart-message"></div>
+      
+      <!-- Cart Layout -->
+      <div class="cart-layout" id="cart-layout">
+        <!-- Cart Products (Left Column) -->
+        <div class="cart-products">
+          <table class="product-table">
+            <thead>
+              <tr>
+                <th colspan="2">Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="cart-items">
+              <!-- Products will be populated here by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Order Summary (Right Column) -->
+        <div class="order-summary">
+          <h2 class="summary-title">ORDER SUMMARY</h2>
+          
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="subtotal">Rs.0</span>
+          </div>
+          
+          <div class="summary-row">
+            <span>Delivery Fee</span>
+            <span>Rs.15</span>
+          </div>
+          
+          <div class="summary-total">
+            <span>Total</span>
+            <span id="total">Rs.15</span>
+          </div>
+          
+          <button id="checkout-btn" class="checkout-btn">
+            Proceed to checkout
+          </button>
+          
+          <a href="#" class="continue-shopping">Continue shopping</a>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li>About Ivory Nest</li>
+            <li>Careers</li>
+            <li>Contact</li>
+            <li>Cookie Policy</li>
+            <li>Food Administration</li>
+            <li>Declaration</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Customer Service</h4>
+          <ul>
+            <li>Store Locator</li>
+            <li>Visit us</li>
+            <li>Shipping Policy</li>
+            <li>Return Policy</li>
+            <li>Terms and Conditions</li>
+            <li>Privacy Policy</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Professionals</h4>
+          <ul>
+            <li>B2B Online Portal</li>
+            <li>Image Bank</li>
+            <li>Upholstery Program</li>
+            <li>Press Kit</li>
+            <li>Revit & pCon Planner</li>
+          </ul>
+        </div>
+        <div class="footer-col newsletter">
+          <h4>Newsletter</h4>
+          <p>
+            Stay connected to receive updates on special events & new product launches
+          </p>
+          <div class="subscribe-input">
+            <input type="email" placeholder="Your email">
+            <button>Subscribe</button>
+          </div>
+          
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-pinterest-p"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="copyrights">
+        <h2>Ivory Nest</h2>
+        <p>Ivory A/s, Aarhusgade, Floor-2, Denmark</p>
+        <p>CVR: 12236483479, info@ivory.com</p>
+      </div>
+    </footer>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+    
+    <!-- Loading Indicator -->
+    <div class="loading" id="loading-indicator">
+      <div class="spinner"></div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // DOM elements
+        const cartItemsContainer = document.getElementById('cart-items');
+        const emptyCartMessage = document.getElementById('empty-cart-message');
+        const cartLayout = document.getElementById('cart-layout');
+        const subtotalElement = document.getElementById('subtotal');
+        const totalElement = document.getElementById('total');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const notification = document.getElementById('notification');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const userIcon = document.getElementById('user-icon');
+        const userDropdown = document.getElementById('user-dropdown');
+        
+        // Sample data
+        const products = [
+          {
+            id: 1,
+            name: "Gradient Graphic T-shirt",
+            price: 145,
+            image: "/api/placeholder/240/240",
+            size: "Large",
+            color: "White",
+            quantity: 1
+          },
+          {
+            id: 2,
+            name: "Minimalist Ceramic Vase",
+            price: 250,
+            image: "/api/placeholder/240/240",
+            size: "Medium",
+            color: "Ivory",
+            quantity: 1
+          },
+          {
+            id: 3,
+            name: "Wooden Side Table",
+            price: 495,
+            image: "/api/placeholder/240/240",
+            size: "Standard",
+            color: "Oak",
+            quantity: 1
+          }
+        ];
+        
+        let cart = [];
+        
+        // Toggle user dropdown
+        userIcon.addEventListener('click', function() {
+          userDropdown.classList.toggle('hidden');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.closest('.user-dropdown-wrapper')) {
+            userDropdown.classList.add('hidden');
+          }
+        });
+        
+        // Show notification
+        function showNotification(message, type = 'normal') {
+          notification.textContent = message;
+          notification.className = 'notification show';
+          if (type) {
+            notification.classList.add(type);
+          }
+          
+          setTimeout(() => {
+            notification.classList.remove('show');
+          }, 3000);
+        }
+        
+        // Show/hide loading indicator
+        function setLoading(isLoading) {
+          if (isLoading) {
+            loadingIndicator.style.display = 'flex';
+          } else {
+            loadingIndicator.style.display = 'none';
+          }
+        }
+        
+        // Calculate cart totals
+        function updateCartTotals() {
+          const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+          subtotalElement.textContent = `Rs.${subtotal}`;
+          totalElement.textContent = `Rs.${subtotal + 15}`; // 15 for delivery fee
+        }
+        
+        // Render cart items
+        function renderCart() {
+          if (cart.length === 0) {
+            emptyCartMessage.innerHTML = `
+              <div class="empty-cart-message">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <h3>Your cart is empty</h3>
+                <p>Looks like you haven't added any items to your cart yet.</p>
+                <button class="shop-now-btn" onclick="window.location.href='#products-section'">
+                  Shop Now
+                </button>
+              </div>
+            `;
+            cartLayout.style.display = 'none';
+            return;
+          }
+          
+          emptyCartMessage.innerHTML = '';
+          cartLayout.style.display = 'grid';
+          cartItemsContainer.innerHTML = '';
+          
+          cart.forEach(item => {
+            const row = document.createElement('tr');
+            row.className = 'product-row';
+            row.innerHTML = `
+              <td>
+                <div class="product-image">
+                  <img src="${item.image}" alt="${item.name}">
+                </div>
+              </td>
+              <td class="product-info">
+                <h3 class="product-name">${item.name}</h3>
+                <p class="product-details">${item.size} | ${item.color}</p>
+              </td>
+              <td class="product-price">Rs.${item.price}</td>
+              <td class="quantity-cell">
+                <div class="quantity-wrapper">
+                  <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                  <input type="text" class="quantity-display" id="quantity-${item.id}" value="${item.quantity}" readonly>
+                  <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                </div>
+              </td>
+              <td class="remove-cell">
+                <button class="remove-btn" onclick="removeFromCart(${item.id})">
+                  <i class="fa-solid fa-times"></i>
+                </button>
+              </td>
+            `;
+            cartItemsContainer.appendChild(row);
+          });
+          
+          updateCartTotals();
+        }
+        
+        // Fetch cart items
+        async function fetchCart() {
+          setLoading(true);
+          
+          try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 600));
+            
+            // For demo: start with some items in cart
+            cart = products.map(p => ({...p}));
+            
+            renderCart();
+          } catch (error) {
+            console.error('Error fetching cart:', error);
+            showNotification('Failed to load cart items', 'error');
+          } finally {
+            setLoading(false);
+          }
+        }
+        
+        // Update item quantity
+        window.updateQuantity = async function(productId, change) {
+          setLoading(true);
+          
+          try {
+            const productIndex = cart.findIndex(p => p.id === productId);
+            if (productIndex === -1) return;
+            
+            const newQuantity = cart[productIndex].quantity + change;
+            if (newQuantity < 1) {
+              setLoading(false);
+              return;
+            }
+            
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 300));
+            
+            cart[productIndex].quantity = newQuantity;
+            
+            const quantityInput = document.getElementById(`quantity-${productId}`);
+            if (quantityInput) {
+              quantityInput.value = newQuantity;
+            }
+            
+            updateCartTotals();
+            showNotification('Cart updated', 'success');
+            
+          } catch (error) {
+            console.error('Error updating quantity:', error);
+            showNotification('Failed to update quantity', 'error');
+          } finally {
+            setLoading(false);
+          }
+        };
+        
+        // Remove item from cart
+        window.removeFromCart = async function(productId) {
+          setLoading(true);
+          
+          try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 600));
+            
+            const removedProduct = cart.find(item => item.id === productId);
+            if (!removedProduct) {
+              throw new Error('Product not found in cart');
+            }
+            
+            cart = cart.filter(item => item.id !== productId);
+            showNotification(`Item removed from cart`, 'success');
+            renderCart();
+          } catch (error) {
+            console.error('Error removing item:', error);
+            showNotification('Failed to remove item from cart', 'error');
+          } finally {
+            setLoading(false);
+          }
+        };
+        
+        // Checkout process
+        checkoutBtn.addEventListener('click', async function() {
+          if (cart.length === 0) {
+            showNotification('Cannot checkout with empty cart', 'error');
+            return;
+          }
+          
+          setLoading(true);
+          
+          try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            showNotification('Order placed successfully!', 'success');
+            cart = [];
+            renderCart();
+          } catch (error) {
+            console.error('Error during checkout:', error);
+            showNotification('Failed to place order', 'error');
+          } finally {
+            setLoading(false);
+          }
+        });
+        
+        // Initialize
+        setLoading(false);
+        fetchCart();
+      });
+    </script>
+  </body>
+</html>
