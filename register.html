@@ -12,34 +12,29 @@
   </head>
   <body>
     <header class="header-section">
-        <nav class="navbar">
-          <ul class="nav-list">
-            <li>SHOP</li>
-            <li>INSPIRATION</li>
-            <li>IVORY HOUSE</li>
-            <li>SAMPLES</li>
-            <li>PROFESSIONALS</li>
-          </ul>
-        </nav>
-        <h1><a href="index.html" class="logo">Ivory Nest</a></h1>
-        <ul class="usermenu">
-          <li><i class="fa-solid fa-magnifying-glass" ></i>
-          <li><i class="fa-solid fa-cart-shopping"></i></li>
-            
-          </li>
-          <li class="user-dropdown-wrapper">
-            <i class="fa-solid fa-user" id="user-icon"></i>
-            <div class="user-dropdown hidden" id="user-dropdown">
-              <a href="">Login</a>
-              <a href="">Logout</a>
-              <!-- <button id="theme-toggle">Toggle Theme</button> -->
-  
-            </div>
-          </li>
-          
+      <div class="hamburger" id="hamburger">&#9776;</div>
+      <nav class="navbar" id="navbar">
+        <ul class="nav-list">
+          <li><a href="index.html">HOME</a></li>
+          <li><a href="#shop-by-category">CATEGORY</a></li>
+          <li><a href="#discover-the-collection">COLLECTIONS</a></li>
+          <li><a href="allProducts.html">SAMPLES</a></li>
         </ul>
-        
-      </header>
+      </nav>
+      <h1><a href="index.html" class="logo">HOME DECOR</a></h1>
+      <ul class="usermenu">
+        <li><i class="fa-solid fa-magnifying-glass"></i></li>
+        <li onclick="window.location.href='cart.html'">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </li>
+        <li class="user-dropdown-wrapper">
+          <i class="fa-solid fa-user" id="user-icon"></i>
+          <div class="user-dropdown hidden" id="user-dropdown">
+            <!-- User menu content will be dynamically inserted here -->
+          </div>
+        </li>
+      </ul>
+    </header>
     <section class="signup-section">
       <h2>BECOME AN INSIDER</h2>
       <ul class="benefits">
@@ -66,88 +61,86 @@
         </label>
         <label>
           Password
-          <input type="password" name="password" required />
+          <input type="password" name="password" placeholder="Enter minimum 6 characters" required />
         </label>
         <button type="submit">Join Now</button>
       </form>
     </section>
     <footer id="footer">
-        <section class="details">
-          <div class="company">
-            <ul>
-              <li>ABout Audo Copenhagen</li>
-              <li>Carerer</li>
-              <li>Contact</li>
-              <li>Cookie Policy</li>
-              <li>Food Adminstration Report</li>
-              <li>Declaration</li>
-              <li>Our Responsibility</li>
-              <li>Whistleblower Platform</li>
-            </ul>
-          </div>
-          <div class="customer-service">
-            <ul>
-              <li>Store Locator</li>
-              <li>Visit us</li>
-              <li>Shipping Policy</li>
-              <li>Return Policy</li>
-              <li>Terms and Conditions</li>
-              <li>Privacy Policy</li>
-            </ul>
-          </div>
-          <div class="professionals">
-            <ul>
-              <li>B2B Online POrtal</li>
-              <li>Image Bank</li>
-              <li>Upholstrly Program</li>
-              <li>Press Kit</li>
-              <li>Revit & pCon Planner</li>
-              <li>2D,3D & Revilt Files</li>
-            </ul>
-          </div>
-          <div class="newsleter">
-            <p>
-              Stay connected to receive updates,learn about special events & new
-              product launches fro Audo Copenhagen
-            </p>
-            <button>SUbscribe</button>
-            
-              <ul>
-                <li><i class="fab fa-facebook-f"></i></li>
-                <li><i class="fab fa-instagram"></i></li>
-                <li><i class="fab fa-pinterest-p"></i></li>
-              </ul>
-              
-            
-          </div>
-        </section>
-        <section class="copyrights">
-          <h1>Ivory Nest</h1>
-          <p>Ivory A/s,Aarhusgade,Flor-2,Denmark</p>
-          <p>CVR:12236483479,info@ivory</p>
-        </section>
-      </footer>
+      <section class="details">
+        <div class="company">
+          <ul>
+            <li>About Ivory Nest</li>
+            <li>Careers</li>
+            <li>Contact</li>
+            <li>Cookie Policy</li>
+            <li>Food Administration Report</li>
+            <li>Declaration</li>
+            <li>Our Responsibility</li>
+            <li>Whistleblower Platform</li>
+          </ul>
+        </div>
+        <div class="customer-service">
+          <ul>
+            <li>Store Locator</li>
+            <li>Visit us</li>
+            <li>Shipping Policy</li>
+            <li>Return Policy</li>
+            <li>Terms and Conditions</li>
+            <li>Privacy Policy</li>
+          </ul>
+        </div>
+        <div class="professionals">
+          <ul>
+            <li>B2B Online Portal</li>
+            <li>Image Bank</li>
+            <li>Upholstery Program</li>
+            <li>Press Kit</li>
+            <li>Revit & pCon Planner</li>
+            <li>2D, 3D & Revit Files</li>
+          </ul>
+        </div>
+        <div class="newsleter">
+          <p>
+            Stay connected to receive updates, learn about special events & new
+            product launches from Ivory Nest.
+          </p>
+          <button>SUBSCRIBE</button>
+          <ul>
+            <li><i class="fab fa-facebook-f"></i></li>
+            <li><i class="fab fa-instagram"></i></li>
+            <li><i class="fab fa-pinterest-p"></i></li>
+          </ul>
+        </div>
+      </section>
+      <section class="copyrights">
+        <h1>Ivory Nest</h1>
+        <p>Ivory A/S, Aarhusgade, Floor 2, Denmark</p>
+        <p>CVR: 12236483479, info@ivorynest.com</p>
+      </section>
+    </footer>
       <script src="script.js"></script>
       <script>
         document.getElementById("register-form").addEventListener("submit",async(e)=>{
           e.preventDefault();
-
+          
           const form = e.target
+          
           const data ={
             name : form.firstName.value,
             email : form.email.value,
             password : form.password.value
           }
+          console.log(data)
 
           try{
             const res = await fetch("https://home-decor-tqze.onrender.com/auth/create-user",{
-              method:"POST",
-              headers:{
-                "Content-Type":"application/json",
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
               },
-              body:JSON.stringify(data)
-    
-            })
+              body: JSON.stringify(data),
+            });
             const result = await res.json()
             console.log(result)
             if(res.ok){

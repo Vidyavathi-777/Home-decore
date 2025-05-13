@@ -1,4 +1,78 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const hamburger = document.getElementById("hamburger");
+  const navbar = document.getElementById("navbar");
+  const userIcon = document.getElementById("user-icon");
+  const userDropdown = document.getElementById("user-dropdown");
 
+  let isLoggedIn = !!localStorage.getItem("token");
+  let username = localStorage.getItem("name") || "JohnDoe";
+
+  hamburger.addEventListener("click", () => {
+    navbar.classList.toggle("active");
+  });
+
+  function updateUserMenu() {
+    userDropdown.innerHTML = "";
+
+    if (isLoggedIn) {
+      const usernameDisplay = document.createElement("div");
+      usernameDisplay.className = "username-display";
+      usernameDisplay.innerHTML = `<i class="fa-solid fa-circle-user"></i>${username}`;
+      userDropdown.appendChild(usernameDisplay);
+
+      const divider = document.createElement("hr");
+      userDropdown.appendChild(divider);
+
+      const logoutLink = document.createElement("a");
+      logoutLink.href = "#";
+      logoutLink.innerHTML =
+        '<i class="fa-solid fa-right-from-bracket"></i>Logout';
+      logoutLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        localStorage.removeItem("token");
+        localStorage.removeItem("username");
+        sessionStorage.clear();
+
+        isLoggedIn = false;
+        updateUserMenu();
+        userDropdown.classList.add("hidden");
+        alert("You have been logged out");
+
+        window.location.href = "/index.html";
+      });
+      userDropdown.appendChild(logoutLink);
+    } else {
+      const loginLink = document.createElement("a");
+      loginLink.href = "/login.html";
+      loginLink.innerHTML =
+        '<i class="fa-solid fa-right-to-bracket"></i>Login';
+      userDropdown.appendChild(loginLink);
+
+      const registerLink = document.createElement("a");
+      registerLink.href = "/register.html";
+      registerLink.innerHTML =
+        '<i class="fa-solid fa-user-plus"></i>Register';
+      userDropdown.appendChild(registerLink);
+    }
+  }
+  updateUserMenu();
+
+  userIcon.addEventListener("click", function () {
+    updateUserMenu();
+    userDropdown.classList.toggle("hidden");
+  });
+
+  document.addEventListener("click", function (event) {
+    if (
+      !userDropdown.contains(event.target) &&
+      event.target !== userIcon
+    ) {
+      userDropdown.classList.add("hidden");
+    }
+  });
+
+  updateUserMenu();
+});
 const imageMap = {
     "1":"https://cdn.shopify.com/s/files/1/0438/1069/files/Laurel_Bed_Low_Footboard_Oat_Maple_5.jpg?v=1715117126?format=webp&width=600",
     "2":"https://cdn.shopify.com/s/files/1/0438/1069/products/Prisha_Linen_Pillow_Charcoal_Grey_7.jpg?v=1743087098?format=webp&width=600",
