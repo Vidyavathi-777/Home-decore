@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Your CSS styles remain the same */
+        
         .main {
             padding: 40px 0;
         }
@@ -250,7 +250,7 @@
         <div class="hamburger" id="hamburger">&#9776;</div>
         <nav class="navbar" id="navbar">
           <ul class="nav-list">
-            <li><a href="order.html">HOME</a></li>
+            <li><a href="index.html">HOME</a></li>
             <li><a href="#shop-by-category">CATEGORY</a></li>
             <li><a href="#discover-the-collection">COLLECTIONS</a></li>
             
@@ -258,14 +258,13 @@
         </nav>
         <h1><a href="index.html" class="logo">HOME DECOR</a></h1>
         <ul class="usermenu">
-          <li><i class="fa-solid fa-magnifying-glass"></i></li>
           <li onclick="window.location.href='cart.html'">
             <i class="fa-solid fa-cart-shopping"></i>
           </li>
           <li class="user-dropdown-wrapper">
             <i class="fa-solid fa-user" id="user-icon"></i>
             <div class="user-dropdown hidden" id="user-dropdown">
-              <!-- User menu content will be dynamically inserted here -->
+             
             </div>
           </li>
         </ul>
@@ -382,35 +381,7 @@
     <script src="script.js"></script>
 
     <script>
-        // document.addEventListener('DOMContentLoaded', function () {
-        //     const hamburgerMenu = document.getElementById('hamburgerMenu');
-        //     const navbarMenu = document.getElementById('navbarMenu');
-
-        //     hamburgerMenu.addEventListener('click', function () {
-        //         navbarMenu.classList.toggle('active');
-        //     });
-
-
-        //     const userIcon = document.getElementById('userIcon');
-        //     const userDropdown = document.getElementById('userDropdown');
-
-        //     userIcon.addEventListener('click', function (e) {
-        //         e.stopPropagation();
-        //         userDropdown.classList.toggle('show');
-        //     });
-
-
-        //     document.addEventListener('click', function () {
-        //         if (userDropdown.classList.contains('show')) {
-        //             userDropdown.classList.remove('show');
-        //         }
-        //     });
-
-        //     userDropdown.addEventListener('click', function (e) {
-        //         e.stopPropagation();
-        //     });
-        // });
-
+        
         setTimeout(function () {
             document.getElementById('loadingSpinner').style.display = 'none';
         }, 2000);
@@ -422,25 +393,7 @@
             const loginNavItemElement = document.getElementById('loginNavItem'); // Assuming you have this.
             const usernameDisplayElement = document.getElementById('usernameDisplay');  //Added this
 
-            // if (token) {
-
-            //     userDropdownElement.style.display = 'block';
-            //     if (loginNavItemElement) {
-            //         loginNavItemElement.style.display = 'none';
-            //     }
-            //     if(usernameDisplayElement){
-            //       const username = localStorage.getItem('username') || 'User';
-            //       usernameDisplayElement.textContent = username;
-            //     }
-
-
-            // } else {
-
-            //     userDropdownElement.style.display = 'none';
-            //     if (loginNavItemElement) {
-            //         loginNavItemElement.style.display = 'block';
-            //     }
-            // }
+            
         }
 
 
@@ -508,11 +461,7 @@
                             <div class="order-total">
                                 Total: ₹${total.toFixed(2)}
                             </div>
-                            <div class="text-end mt-3">
-                                <button class="view-details-btn">
-                                    <i class="fas fa-eye"></i> View Details
-                                </button>
-                            </div>
+                            
                         `;
                         ordersContent.appendChild(orderCard);
                     });
@@ -524,30 +473,14 @@
             }
         }
 
-        // function getStatusClass(status) {
-        //     switch (status.toLowerCase()) {
-        //         case 'processing':
-        //             return 'status-processing';
-        //         case 'shipped':
-        //             return 'status-shipped';
-        //         case 'delivered':
-        //             return 'status-delivered';
-        //         case 'cancelled':
-        //             return 'status-cancelled';
-        //         case 'pending':
-        //             return 'status-processing'
-        //         default:
-        //             return '';
-        //     }
-        // }
-
+       
 
         document.addEventListener('DOMContentLoaded', function () {
             checkAuthState();
             fetchOrders();
-            //logout functionality
-            const logoutButton = document.getElementById('logoutBtn'); //get the logout button
-            if(logoutButton){ // check if the button exists
+            
+            const logoutButton = document.getElementById('logoutBtn'); 
+            if(logoutButton){ 
               logoutButton.addEventListener('click', function (e) {
                   e.preventDefault();
                   localStorage.removeItem('token');
